@@ -1,13 +1,9 @@
 package com.xsoftcdmx.database.model.pokemon
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.xsoft.satori.core.model.pokemon.PokemonModel
 import com.xsoft.satori.core.model.pokemon.Result
 
-@Entity(tableName = "pokemon")
 data class PokemonModelEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val count: Int? = 0,
     val next: String? = "",
     val previous: String? = "",
@@ -15,8 +11,8 @@ data class PokemonModelEntity(
 )
 
 fun ResultEntity.asUiModel() = Result(
-    name = name ?: "",
-    url = url ?: "",
+    name = name,
+    url = url,
 )
 
 fun PokemonModelEntity.asUiModel() = PokemonModel(

@@ -5,6 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.xsoft.satori.core.data.model.asEntity
 import com.xsoftcdmx.database.model.pokemon.PokemonModelEntity
 import com.xsoftcdmx.database.model.pokemon.ResultEntity
 import com.xsoftcdmx.database.room.PokemonDatabase
@@ -14,42 +15,42 @@ import com.xsoftcdmx.network.api.IApiService
 class PokemonRemoteMediator(
     private val apiService: IApiService,
     private val database: PokemonDatabase
-) : RemoteMediator<Int, PokemonModelEntity>() {
+) : RemoteMediator<Int, ResultEntity>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PokemonModelEntity>
+        state: PagingState<Int, ResultEntity>
     ): MediatorResult {
-        val page = when (loadType) {
+        val offset = when (loadType) {
             LoadType.REFRESH -> 0
             LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
             LoadType.APPEND -> {
                 val lastItem = state.lastItemOrNull()
-                lastItem?.id?.toInt()
                     ?: return MediatorResult.Success(endOfPaginationReached = true)
+                (lastItem.id / state.config.pageSize) * state.config.pageSize
             }
         }
-        try {
-            val apiResponse = apiService.getPokemon(limit = state.config.pageSize, offset = page)
 
-            val pokemon = apiResponse.body()?.results!!.map {
-                PokemonModelEntity(
-                    count = apiResponse.body()?.count ?: 0,
-                    next = apiResponse.body()?.next ?: "",
-                    previous = apiResponse.body()?.previous.toString() ?: "",
-                    results = listOf(ResultEntity(name = it?.name ?: "", url = it?.url ?: ""))
-                )
-            } ?: listOf()
+        return try {
+            val response = apiService.getPokemon(
+                limit = state.config.pageSize,
+                offset = offset
+            )
+
+            val results = response.body()?.results?.mapNotNull { it?.asEntity() } ?: emptyList()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     database.pokemonDao().clearAllPokemon()
                 }
-                database.pokemonDao().insertPokemon(pokemon)
+                database.pokemonDao().insertResults(results)
             }
-            return MediatorResult.Success(endOfPaginationReached = apiResponse.body()?.next == null)
+
+            MediatorResult.Success(endOfPaginationReached = results.isEmpty())
         } catch (e: Exception) {
-            return MediatorResult.Error(e)
+            MediatorResult.Error(e)
         }
     }
+
 }
+

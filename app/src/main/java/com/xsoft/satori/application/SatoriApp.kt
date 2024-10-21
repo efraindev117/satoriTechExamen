@@ -9,6 +9,9 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class SatoriApp : Application(), ImageLoaderFactory {
+
+
+
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)
             .memoryCache {

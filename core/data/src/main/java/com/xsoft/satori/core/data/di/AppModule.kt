@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.xsoft.satori.core.data.PokemonRemoteMediator
 import com.xsoftcdmx.database.model.pokemon.PokemonModelEntity
+import com.xsoftcdmx.database.model.pokemon.ResultEntity
 import com.xsoftcdmx.database.room.PokemonDatabase
 import com.xsoftcdmx.network.api.IApiService
 import dagger.Module
@@ -19,20 +20,4 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun providePokemonPager(
-        pokemonDb: PokemonDatabase,
-        pokemonApi: IApiService
-    ): Pager<Int, PokemonModelEntity> {
-        return Pager(
-            config = PagingConfig(pageSize = 25),
-            remoteMediator = PokemonRemoteMediator(
-                apiService = pokemonApi,
-                database = pokemonDb
-            ), pagingSourceFactory = {
-                pokemonDb.pokemonDao().getAllPokemon()
-            }
-        )
-    }
 }

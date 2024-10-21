@@ -9,11 +9,9 @@ import com.xsoftcdmx.database.model.pokemon.PokemonModelEntity
 import com.xsoftcdmx.database.model.pokemon.ResultEntity
 
 
-@Database(entities = [PokemonModelEntity::class, ResultEntity::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)  // Agregamos el TypeConverter aquí
+@Database(entities = [ResultEntity::class], version = 1, exportSchema = false)
 abstract class PokemonDatabase : RoomDatabase() {
     abstract fun pokemonDao(): IPokemonDao
-
     companion object {
         @Volatile
         private var INSTANCE: PokemonDatabase? = null

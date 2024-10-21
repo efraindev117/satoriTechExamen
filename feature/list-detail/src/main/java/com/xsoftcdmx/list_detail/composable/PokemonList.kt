@@ -1,6 +1,5 @@
 package com.xsoftcdmx.list_detail.composable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,26 +14,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberImagePainter
-import com.xsoft.satori.core.model.pokemon.PokemonModel
+import com.xsoft.satori.core.model.pokemon.Result
+
 
 @Composable
 fun PokemonList(
     modifier: Modifier = Modifier,
-    lazyPagingItems: LazyPagingItems<PokemonModel>
+    lazyPagingItems: LazyPagingItems<Result>,
 ) {
 
-    LazyColumn(modifier = modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
         items(lazyPagingItems.itemCount) { index ->
-            val pokemonModel = lazyPagingItems[index]
-            pokemonModel?.results?.forEach { result ->
-                result?.let { pokemon ->
-                    ListItem(
-                        name = pokemon.name ?: "Unknown Pokémon",
-                        spriteUrl = pokemon.sprite()
-                    )
-                }
+            val pokemon = lazyPagingItems[index]
+            pokemon?.let {
+                ListItem(
+                    name = it.name,
+                    spriteUrl = it.sprite()
+                )
             }
         }
 
@@ -55,7 +53,6 @@ fun PokemonList(
             }
         }
     }
-
 }
 
 @Composable

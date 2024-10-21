@@ -32,7 +32,6 @@ android {
 dependencies {
 
     implementation("io.coil-kt:coil:2.4.0") // Coil Core
-    implementation("androidx.startup:startup-runtime:1.2.0")
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
 

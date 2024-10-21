@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import com.xsoft.satori.core.common.BaseRepository
 import com.xsoft.satori.core.common.Resource
 import com.xsoftcdmx.database.model.pokemon.PokemonModelEntity
+import com.xsoftcdmx.database.model.pokemon.ResultEntity
 import com.xsoftcdmx.database.room.PokemonDatabase
 import com.xsoftcdmx.network.INetworkDataSource
 import com.xsoftcdmx.network.api.IApiService
@@ -30,11 +31,12 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPokemonPagingStream(): Flow<PagingData<PokemonModelEntity>> {
+    override fun getPokemonPagingStream(): Flow<PagingData<ResultEntity>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 25, // Define el tamaño de cada página
-                enablePlaceholders = false
+                pageSize = 25,
+                enablePlaceholders = false,
+                prefetchDistance = 5
             ),
             remoteMediator = PokemonRemoteMediator(
                 apiService = apiService,

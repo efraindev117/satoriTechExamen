@@ -7,4 +7,8 @@ data class NetworkResult(
     val name: String? = "",
     @SerializedName("url")
     val url: String? = ""
-)
+){
+    fun getIdFromUrl(): Int? {
+        return url?.trimEnd('/')?.substringAfterLast('/')?.toIntOrNull()
+    }
+}

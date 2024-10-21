@@ -11,16 +11,13 @@ import com.xsoftcdmx.database.model.pokemon.ResultEntity
 @Dao
 interface IPokemonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPokemon(pokemons: List<PokemonModelEntity>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertResults(results: List<ResultEntity>)
 
     @Query("SELECT * FROM pokemon")
-    fun getAllPokemon(): PagingSource<Int, PokemonModelEntity>
+    fun getAllPokemon(): PagingSource<Int, ResultEntity>
 
     @Query("SELECT * FROM pokemon WHERE id = :pokemonId")
-    suspend fun getPokemonById(pokemonId: Int): PokemonModelEntity?
+    suspend fun getPokemonById(pokemonId: Int): ResultEntity?
 
     @Query("DELETE FROM pokemon")
     suspend fun clearAllPokemon()

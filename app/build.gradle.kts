@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.satori.android.application)
     alias(libs.plugins.satori.android.application.compose)
     alias(libs.plugins.satori.android.hilt)
+
 }
 
 android {
@@ -26,12 +27,19 @@ android {
             isShrinkResources = true
         }
     }
-
 }
 
 dependencies {
+
+    implementation("io.coil-kt:coil:2.4.0") // Coil Core
+    implementation("androidx.startup:startup-runtime:1.2.0")
+    implementation("io.coil-kt:coil:2.4.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    implementation(libs.room.paging)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(project(":feature:list-detail"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

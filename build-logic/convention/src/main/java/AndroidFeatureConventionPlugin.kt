@@ -10,6 +10,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             pluginManager.apply {
                 apply("satori.android.library")
                 apply("satori.android.hilt")
+                apply("satori.android.library.compose")
                 apply("org.jetbrains.kotlin.plugin.serialization")
             }
 

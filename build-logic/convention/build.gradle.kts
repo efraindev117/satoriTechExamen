@@ -18,6 +18,7 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
+    implementation(libs.androidx.room.gradle.plugin)
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)
     compileOnly(libs.kotlin.gradlePlugin)
@@ -56,6 +57,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "satori.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
+        }
+        register("androidRoom"){
+            id = "satori.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
         }
     }
 }

@@ -5,8 +5,9 @@ import com.xsoft.satori.core.model.BuildConfig
 data class Result(
     val name: String,
     val url: String,
+    var isFavorite: Boolean = false // Nuevo campo para favorito
 ) {
-    private fun getIdFromUrl(): String {
+    fun getIdFromUrl(): String {
         return url.trimEnd('/').substringAfterLast('/')
     }
 

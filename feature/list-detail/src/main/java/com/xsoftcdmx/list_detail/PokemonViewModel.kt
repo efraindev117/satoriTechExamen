@@ -4,25 +4,42 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.xsoft.satori.core.common.Resource
 import com.xsoft.satori.core.model.pokemon.Result
 import com.xsoftcdmx.domain.GetPokemonPagingUseCase
+import com.xsoftcdmx.network.model.detail.NetworkPokemonDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PokemonViewModel @Inject constructor(
-    getPokemonPagingUseCase: GetPokemonPagingUseCase
+    private val getPokemonPagingUseCase: GetPokemonPagingUseCase
 ) : ViewModel() {
 
-    val pokemonPagingFlow: Flow<PagingData<Result>> = flow {
-        // Introduce un retraso de 20 segundos
-        delay(25_000L) // 20 segundos en milisegundos
-        // Luego emite el flujo del use case
-        emitAll(getPokemonPagingUseCase())
-    }.cachedIn(viewModelScope)
+    val pokemonPagingFlow: Flow<PagingData<Result>> =
+        getPokemonPagingUseCase().cachedIn(viewModelScope)
+
+    private val _pokemonDetailState =
+        MutableStateFlow<Resource<NetworkPokemonDetail>>(Resource.Loading)
+    val pokemonDetailState: StateFlow<Resource<NetworkPokemonDetail>> =
+        _pokemonDetailState.asStateFlow()
+
+
+    fun getPokemonDetail(id: Int) {
+        viewModelScope.launch {
+            getPokemonPagingUseCase(id).collect { resource ->
+                _pokemonDetailState.value = resource
+            }
+        }
+    }
+
 }
 

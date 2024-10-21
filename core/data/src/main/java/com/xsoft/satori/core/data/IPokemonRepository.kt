@@ -11,5 +11,5 @@ import kotlinx.coroutines.flow.Flow
 interface IPokemonRepository {
     fun getPokemonPagingStream(): Flow<PagingData<ResultEntity>>
     suspend fun getPokemon(limit: Int, offset: Int): Flow<Resource<NetworkPokemonModel>>
-    suspend fun getPokemonDetail(): Flow<Resource<NetworkPokemonDetail>>
+    suspend fun getPokemonDetail(id:Int): Flow<Resource<NetworkPokemonDetail>>
 }

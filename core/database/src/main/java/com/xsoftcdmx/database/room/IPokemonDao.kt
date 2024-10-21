@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.xsoftcdmx.database.model.pokemon.PokemonModelEntity
 import com.xsoftcdmx.database.model.pokemon.ResultEntity
 
@@ -21,4 +22,7 @@ interface IPokemonDao {
 
     @Query("DELETE FROM pokemon")
     suspend fun clearAllPokemon()
+
+    @Update
+    suspend fun updatePokemon(pokemon: ResultEntity)
 }

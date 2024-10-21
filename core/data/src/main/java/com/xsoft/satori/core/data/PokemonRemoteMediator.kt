@@ -6,7 +6,6 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.xsoft.satori.core.data.model.asEntity
-import com.xsoftcdmx.database.model.pokemon.PokemonModelEntity
 import com.xsoftcdmx.database.model.pokemon.ResultEntity
 import com.xsoftcdmx.database.room.PokemonDatabase
 import com.xsoftcdmx.network.api.IApiService
@@ -38,7 +37,14 @@ class PokemonRemoteMediator(
             )
 
             val results = response.body()?.results?.mapNotNull { it?.asEntity() } ?: emptyList()
-
+            val pokemonList = response.body()?.results?.map { result ->
+                ResultEntity(
+                    id = result?.getIdFromUrl()!!.toInt(),
+                    name = result?.name!!,
+                    url = result.url!!,
+                    isFavorite = false // Estado inicial al cargar desde la API
+                )
+            }
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     database.pokemonDao().clearAllPokemon()

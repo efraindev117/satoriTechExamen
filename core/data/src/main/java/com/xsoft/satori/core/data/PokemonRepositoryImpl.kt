@@ -6,7 +6,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.xsoft.satori.core.common.BaseRepository
 import com.xsoft.satori.core.common.Resource
-import com.xsoftcdmx.database.model.pokemon.PokemonModelEntity
 import com.xsoftcdmx.database.model.pokemon.ResultEntity
 import com.xsoftcdmx.database.room.PokemonDatabase
 import com.xsoftcdmx.network.INetworkDataSource
@@ -26,9 +25,11 @@ class PokemonRepositoryImpl @Inject constructor(
             apiService.getPokemon(limit, offset)
         }
 
-    override suspend fun getPokemonDetail(): Flow<Resource<NetworkPokemonDetail>> = safeApiCall {
-        apiService.getPokemonDetail(id = 1)
-    }
+
+    override suspend fun getPokemonDetail(id: Int): Flow<Resource<NetworkPokemonDetail>> =
+        safeApiCall {
+            apiService.getPokemonDetail(id = id)
+        }
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getPokemonPagingStream(): Flow<PagingData<ResultEntity>> {

@@ -13,6 +13,7 @@ data class PokemonModelEntity(
 fun ResultEntity.asUiModel() = Result(
     name = name,
     url = url,
+    isFavorite = isFavorite
 )
 
 fun PokemonModelEntity.asUiModel() = PokemonModel(

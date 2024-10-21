@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface INetworkDataSource {
     suspend fun getPokemon(limit: Int, offset: Int): Flow<Resource<NetworkPokemonModel>>
-    suspend fun getPokemonDetail(): Flow<Resource<NetworkPokemonDetail>>
+    suspend fun getPokemonDetail(id: Int): Flow<Resource<NetworkPokemonDetail>>
 }

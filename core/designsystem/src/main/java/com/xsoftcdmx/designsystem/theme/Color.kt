@@ -1,4 +1,4 @@
-package com.xsoft.satori.ui.theme
+package com.xsoftcdmx.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

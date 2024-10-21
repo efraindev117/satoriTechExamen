@@ -30,15 +30,14 @@ android {
 }
 
 dependencies {
-
-    implementation("io.coil-kt:coil:2.4.0") // Coil Core
-    implementation("io.coil-kt:coil:2.4.0")
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.coil.kt.coil)
+    implementation(libs.coil.compose)
 
     implementation(libs.room.paging)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(project(":feature:list-detail"))
+    implementation(project(":core:designsystem"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
